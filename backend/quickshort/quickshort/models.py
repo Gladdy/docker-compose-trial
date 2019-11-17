@@ -8,10 +8,11 @@ class ShortenedUrl(models.Model):
         models.Index(fields=['stats_key']),
     ]
 
-    timestamp = models.DateTimeField(auto_now_add=True, null=False)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True)
     shortened_url = models.TextField(max_length=10, primary_key=True, null=False)
     stats_key = models.TextField(max_length=10, unique=True, null=False)
     original_url = models.URLField(null=False)
+
 
 class Click(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)

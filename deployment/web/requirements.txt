@@ -1,0 +1,41 @@
+# This file may be used to create an environment using:
+# $ conda create --name <env> --file <this file>
+# platform: linux-64
+_libgcc_mutex=0.1
+blas=2.14=openblas
+bzip2=1.0.8
+ca-certificates=2019.9.11
+certifi=2019.9.11
+django=2.2.6
+djangorestframework=3.10.3
+icu=64.2
+jansson=2.11
+libblas=3.8.0
+libcblas=3.8.0
+libffi=3.2.1
+libgcc-ng=9.1.0
+libgfortran-ng=7.3.0
+libiconv=1.15
+liblapack=3.8.0
+liblapacke=3.8.0
+libopenblas=0.3.7
+libstdcxx-ng=9.1.0
+libxml2=2.9.10
+ncurses=6.1
+nomkl=3.0=0
+openssl=1.1.1d
+pcre=8.43
+pip=19.3.1
+pygments=2.4.2
+python=3.7.3
+pytz=2019.3
+readline=8.0
+setuptools=41.6.0
+sqlite=3.30.1
+sqlparse=0.3.0
+tk=8.6.9
+uwsgi=2.0.18
+wheel=0.33.6
+xz=5.2.4
+yaml=0.1.7
+zlib=1.2.11

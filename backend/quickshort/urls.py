@@ -26,7 +26,8 @@ router.register(r'clicks', views.ClickViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('', include(router.urls)),
+    path('rest/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('<slug:slug>/', views.UrlRedirectView.as_view())
+    path('create/', views.CreateShortUrl.as_view()),
+    path('redirect/<slug:slug>/', views.UrlRedirectView.as_view())
 ]
