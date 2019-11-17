@@ -94,29 +94,11 @@ class CreateShortUrl(View):
             return HttpResponseBadRequest('Not a valid URL')
 
         for x in range(10):
-            stats_key = "hi" #random_string(6)
-            short_value = "hi" #random_string(6)
-
+            stats_key = random_string(6)
+            short_value = random_string(6)
             logging.info(f"saving model {stats_key} {short_value}")
             su = ShortenedUrl(shortened_url = short_value, stats_key=stats_key, original_url=url)
             su.save()
-
             return JsonResponse({'short_url': short_value, "stats_key": stats_key})
 
-
-        # short_code = kwargs['slug']
-        #
-        # try:
-        #     entry = ShortenedUrl.objects.get(shortened_url=short_code)
-        # except ShortenedUrl.DoesNotExist:
-        #     return HttpResponse("does not exist")
-        #
-        # original_url = entry.original_url
-        #
-        # c = Click(url=entry)
-        # c.save()
-        #
-        # logger.info(f"Redirecting short={request.get_full_path()} to {original_url} c={c.url}")
-        # return HttpResponseRedirect(original_url)
-
-        return JsonResponse({'foo': 'bar'})
+        return HttpResponseBadRequest('Unknown error')
