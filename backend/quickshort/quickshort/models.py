@@ -10,7 +10,7 @@ class ShortenedUrl(models.Model):
 
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
     shortened_url = models.TextField(max_length=10, primary_key=True, null=False)
-    stats_key = models.TextField(max_length=10, unique=True, null=False)
+    stats_key = models.TextField(max_length=10, unique=True, null=True)
     original_url = models.URLField(null=False)
 
 

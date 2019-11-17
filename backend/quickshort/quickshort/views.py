@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import URLValidator
+from django.db import IntegrityError
 from django.shortcuts import render
 
 # Create your views here.
@@ -69,8 +70,9 @@ import random
 import string
 import json
 
+
 def random_string(N=10):
-    ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(N))
 
 
 class CreateShortUrl(View):
@@ -96,9 +98,13 @@ class CreateShortUrl(View):
         for x in range(10):
             stats_key = random_string(6)
             short_value = random_string(6)
-            logging.info(f"saving model {stats_key} {short_value}")
-            su = ShortenedUrl(shortened_url = short_value, stats_key=stats_key, original_url=url)
-            su.save()
-            return JsonResponse({'short_url': short_value, "stats_key": stats_key})
+
+            try:
+                print(f"saving model {stats_key} {short_value}")
+                su = ShortenedUrl(shortened_url = short_value, stats_key=stats_key, original_url=url)
+                su.save()
+                return JsonResponse({'short_url': short_value, "stats_key": stats_key})
+            except IntegrityError as e:
+                logging.error(f"Unable to create for {stats_key} {short_value} {e}")
 
         return HttpResponseBadRequest('Unknown error')

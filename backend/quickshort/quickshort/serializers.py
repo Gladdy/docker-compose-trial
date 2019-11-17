@@ -17,7 +17,7 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
 class ShortenedUrlSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShortenedUrl
-        fields = [ 'timestamp', 'original_url', 'shortened_url']
+        fields = [ 'timestamp', 'original_url', 'shortened_url', 'stats_key']
 
 class ClickSerializer(serializers.ModelSerializer):
     class Meta:

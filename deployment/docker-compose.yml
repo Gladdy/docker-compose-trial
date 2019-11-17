@@ -17,12 +17,9 @@ services:
       - postgres
     ports:
       - 8001:8001
-      #- 8080:8080
   pgadmin:
     image: dpage/pgadmin4
     container_name: pgadmin
-#    env_file:
-#      - ./env
     depends_on:
       - postgres
     ports:
@@ -32,8 +29,6 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=admin
     volumes:
       - pg_admin:/var/lib/pgadmin4
-#    networks:
-#      postgres:
   postgres:
     image: postgres:9.6
     expose:
