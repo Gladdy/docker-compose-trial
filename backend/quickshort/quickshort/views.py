@@ -46,6 +46,15 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 class UrlRedirectView(View):
     def get(self, request, *args, **kwargs):
         short_code = kwargs['slug']
@@ -56,11 +65,11 @@ class UrlRedirectView(View):
             return HttpResponse("does not exist")
 
         original_url = entry.original_url
-
-        c = Click(url=entry)
+        source_ip = get_client_ip(request)
+        c = Click(url=entry, source_ip=source_ip)
         c.save()
 
-        logger.info(f"Redirecting short={request.get_full_path()} to {original_url} c={c.url}")
+        logger.info(f"Redirecting short={request.get_full_path()} to {original_url} c={c.url} ip={source_ip}")
         return HttpResponseRedirect(original_url)
 
 
