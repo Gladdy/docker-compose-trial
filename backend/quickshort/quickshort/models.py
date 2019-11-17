@@ -17,3 +17,4 @@ class ShortenedUrl(models.Model):
 class Click(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     url = models.ForeignKey(ShortenedUrl, on_delete=models.CASCADE, null=False)
+    source_ip = models.GenericIPAddressField(null=True)

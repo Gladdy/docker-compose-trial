@@ -13,6 +13,7 @@ ENV DOCKER_CONTAINER=1
 #RUN cd app && DJANGO_ENV=prod DOCKER_CONTAINER=1 python manage.py migrate
 
 COPY deployment/web/uwsgi.ini /config/uwsgi.ini
+COPY deployment/web/do_migration.sh /do_migration.sh
 EXPOSE 8001
 
 
