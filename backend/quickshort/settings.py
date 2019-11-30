@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+APPEND_SLASH = False
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

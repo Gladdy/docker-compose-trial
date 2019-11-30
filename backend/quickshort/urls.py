@@ -17,17 +17,21 @@ from django.urls import include, path
 from rest_framework import routers
 from quickshort.quickshort import views
 
-router = routers.DefaultRouter()
+router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'urls', views.UrlViewSet)
 router.register(r'clicks', views.ClickViewSet)
 
+
+from django.views.decorators.csrf import csrf_exempt
+
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    path('rest/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('create/', views.CreateShortUrl.as_view()),
-    path('redirect/<slug:slug>/', views.UrlRedirectView.as_view())
+    path('rest', include(router.urls)),
+    path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
+    path('create', csrf_exempt(views.CreateShortUrl.as_view())),
+    path('stats/<slug:slug>', views.UrlRedirectView.as_view()),
+    path('<slug:slug>', views.UrlRedirectView.as_view())
 ]
