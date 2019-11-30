@@ -16,5 +16,8 @@ COPY deployment/web/uwsgi.ini /config/uwsgi.ini
 COPY deployment/web/do_migration.sh /do_migration.sh
 EXPOSE 8001
 
+RUN useradd -ms /bin/bash uwsgi
+USER uwsgi
+
 
 CMD uwsgi --ini /config/uwsgi.ini
