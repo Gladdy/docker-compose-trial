@@ -9,7 +9,6 @@ services:
       - web
     ports:
       - 80:80
-    command: [nginx-debug, '-g', 'daemon off;']
   web:
     build:
       context: ..
