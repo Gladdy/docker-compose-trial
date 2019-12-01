@@ -1,0 +1,252 @@
+{% extends "quickshort/base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+<script>
+    $( document ).ready(function() {
+        new ClipboardJS('.copy-btn');
+
+
+        let node = $("#shorten-input-button");
+        let field = $("#shorten-input-field");
+        let short_code = $("#shorten-input-code");
+
+        const shorten_form = $("#shorten-form");
+        const shorten_result = $("#shorten-result");
+        const shorten_result_url = $("#shorten-result-url");
+        const shorten_result_stats = $("#shorten-result-stats");
+        const shorten_result_stats_go = $("#shorten-result-stats-go");
+
+        // const short_output_url = $('#shorten-output-url');
+        // const short_output_stats = $('#shorten-output-stats');
+
+        //shorten_result.hide();
+
+        let url = "http://" + $(location).attr('host');
+        console.log(url);
+
+
+        const set_result = function(redirect_url, stats_url) {
+            shorten_result_url.val(redirect_url);
+            shorten_result_stats.val(stats_url);
+
+            //shorten_form.hide();
+            shorten_result.show();
+
+            console.log( "Follow link: " + redirect_url );
+        };
+
+        const do_submit = function(url_to_short, short_code_proposed) {
+            short_code.removeClass("is-invalid");
+            field.removeClass("is-invalid");
+
+            //set_result("why", "stop");
+
+            $.ajax({
+                type: "POST",
+                url: url + "/create",
+                data: JSON.stringify({"url": url_to_short, "code":short_code_proposed}),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data);
+                    // const data = JSON.parse(d);
+                    // console.log(data);
+
+                    const short_url = data["short_url"];
+                    const stats_key = data["stats_key"];
+                    const redirect_url = url + "/" + short_url;
+                    const stats_url = url + "/stats/" + stats_key;
+
+                    set_result(redirect_url, stats_url);
+                },
+                error: function (request, status, errorThrown) {
+                    console.log( "Encountered error: ");
+                    console.log(request);
+                    console.log(status);
+                    console.log(errorThrown);
+
+                    const rt = request["responseText"];
+
+                    if(rt === "invalid-url") {
+                        field.addClass("is-invalid");
+                    }
+
+                    if(rt === "invalid-code") {
+                        short_code.addClass("is-invalid");
+                    }
+
+                    shorten_result.hide();
+                }
+            });
+        };
+
+        console.log(node);
+        node.click(function() {
+            console.log( "Handler for .click() called." + field.val() );
+            do_submit(field.val(), short_code.val());
+        });
+        field.keypress(function( event ) {
+            const enter_code = 13;
+            if ( event.which !== enter_code ) {
+                return;
+            }
+            console.log( "Handler for .keypress called." + field.val() );
+            do_submit(field.val(), short_code.val());
+        });
+
+
+        shorten_result_stats_go.click(function() {
+            console.log( "Handler for .click() called." + field.val() );
+            window.location.href = shorten_result_stats.val();
+        });
+
+    });
+</script>
+
+<div class="jumbotron darkgrey">
+    <div id="shorten-form" class="container border rounded">
+        <!--        <h3>Result</h3>-->
+
+        <div class="row justify-content-md-center">
+            <div class="col col-12 col-lg-10">
+                <div class="input-group input-group-lg my-3">
+                    <input id="shorten-input-field" type="text" class="form-control" placeholder="Enter URL">
+                    <div class="invalid-feedback">
+                        Please provide a valid url.
+                    </div>
+                </div>
+
+                <div class="input-group input-group-lg my-3">
+                    <input id="shorten-input-code" type="text" class="form-control " placeholder="Short code (optional)">
+                    <div class="invalid-feedback">
+                        Invalid short code (maybe it has already been taken).
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-lg-2 my-3 py-0">
+                <button id="shorten-input-button" type="button" class="btn btn-primary btn-lg btn-block h-100">Shorten</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="shorten-result" class="container hidden border rounded py-3 my-3">
+        <h3>Result</h3>
+        <div class="row justify-content-md-center  ">
+            <div class="col col-12 col-lg-6 my-2">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Short URL</span>
+                    </div>
+
+                    <input id="shorten-result-url" class="form-control">
+
+                    <!-- Trigger -->
+                    <div class="input-group-append">
+                        <button class="btn copy-btn btn-primary" data-clipboard-target="#shorten-result-url">
+                            <img src="{% static 'quickshort/svg/copy-content.svg' %}" class="buttonlogo" alt="Copy to clipboard">
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-12 col-lg-6 my-2">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Stats</span>
+                    </div>
+
+                    <input id="shorten-result-stats" class="form-control">
+
+                    <!-- Trigger -->
+                    <div class="input-group-append">
+                        <button class="btn copy-btn btn-primary border border-dark " data-clipboard-target="#shorten-result-stats">
+                            <img src="{% static 'quickshort/svg/copy-content.svg' %}" class="buttonlogo" alt="Copy to clipboard">
+                        </button>
+                    </div>
+
+                    <div class="input-group-append ">
+                        <button id="shorten-result-stats-go" class="btn copy-btn btn-primary border border-dark text-dark">
+                            Go
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2 class="display-9">Keep track of where your clicks came from without intrusive analytics.</h2>
+        <p class="lead">
+            * Easy to remember urls
+            * Breakdown of traffic sources
+            *
+        </p>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="card-deck mb-3 text-center">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Free</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">$0
+                    <small class="text-muted">/ mo</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>10 users included</li>
+                    <li>2 GB of storage</li>
+                    <li>Email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Pro</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">$15
+                    <small class="text-muted">/ mo</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>20 users included</li>
+                    <li>10 GB of storage</li>
+                    <li>Priority email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>
+            </div>
+        </div>
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Enterprise</h4>
+            </div>
+            <div class="card-body">
+                <h1 class="card-title pricing-card-title">$29
+                    <small class="text-muted">/ mo</small>
+                </h1>
+                <ul class="list-unstyled mt-3 mb-4">
+                    <li>30 users included</li>
+                    <li>15 GB of storage</li>
+                    <li>Phone and email support</li>
+                    <li>Help center access</li>
+                </ul>
+                <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

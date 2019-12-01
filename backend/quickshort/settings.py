@@ -22,8 +22,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ef=qej#d8w2%mv$tw4_@&zcypku$sg(osb13uz48*d(g46-(e_'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -57,6 +55,8 @@ LOGGING = {
 
 }
 
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'quickshort',
+    'bakery',
 ]
 
 MIDDLEWARE = [
@@ -85,7 +86,7 @@ ROOT_URLCONF = 'quickshort.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'quickshort/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -106,6 +107,9 @@ WSGI_APPLICATION = 'quickshort.wsgi.application'
 
 
 if os.getenv('DJANGO_ENV') == "prod":
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = False
+
     if os.getenv('DOCKER_CONTAINER'):
         POSTGRES_HOST = 'postgres'
     else:
@@ -123,6 +127,8 @@ if os.getenv('DJANGO_ENV') == "prod":
     }
 
 else:
+    DEBUG = True
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -167,5 +173,10 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATIC_ROOT = 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+BUILD_DIR = os.path.join(BASE_DIR, 'build')
+BAKERY_VIEWS = [
+    "quickshort.quickshort.views.IndexView"
+]

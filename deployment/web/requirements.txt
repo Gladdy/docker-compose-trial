@@ -4,3 +4,5 @@ nomkl=3.0
 python=3.7.3
 uwsgi=2.0.18
 psycopg2=2.8.4
+django-bakery=0.12.7
+fs=2.4.11

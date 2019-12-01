@@ -1,0 +1,100 @@
+
+{% load static %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Martijn Bakker">
+    <title>Quickshort</title>
+
+    <!--    <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/pricing/">-->
+    <link rel="icon" type="image/png" href="{% static 'quickshort/png/link-button.png' %}">
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@beta/dist/js.cookie.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js"></script>
+
+    <style>
+        .buttonlogo {
+            height: 1.0rem;
+        }
+
+        .darkgrey {
+            #background-color: #181325 !important;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+<div id="primary-nav">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <!--<img src="https://www.filestack.com/wp-content/uploads/2018/05/logo.svg">-->
+                <img src="{% static 'quickshort/svg/link-button.svg' %}" class="buttonlogo">
+                <span>Quickshort</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+{% block content %}
+{% endblock %}
+
+<footer class="container pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+        <div class="col-12 col-md">
+            <!--<img class="mb-2" src="/docs/4.3/assets/brand/bootstrap-solid.svg" alt="" width="24" height="24"> -->
+            <small class="d-block mb-3 text-muted">&copy; 2019</small>
+        </div>
+
+        <!--
+        <div class="col-6 col-md">
+            <h5>Features</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Short, custom urls</a></li>
+                <li><a class="text-muted" href="#">Breakdown of traffic sources</a></li>
+                <li><a class="text-muted" href="#">Minimal tracking</a></li>
+                <li><a class="text-muted" href="#">No login required</a></li>
+                <li><a class="text-muted" href="#">Another one</a></li>
+                <li><a class="text-muted" href="#">Last time</a></li>
+            </ul>
+        </div>
+        -->
+        <div class="col-6 col-md">
+            <h5>Powered by</h5>
+            <ul class="list-unstyled text-small">
+                <li><a class="text-muted" href="#">Bootstrap</a></li>
+                <li><a class="text-muted" href="#">JQuery</a></li>
+                <li><a class="text-muted" href="#">NGINX</a></li>
+                <li><a class="text-muted" href="#">Django</a></li>
+                <li><a class="text-muted" href="#">PostgreSQL</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!--
+    <div>Icons made by <a href="https://www.flaticon.com/authors/google" title="Google">Google</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+    -->
+</footer>
+
+</body>
+
+
+</html>

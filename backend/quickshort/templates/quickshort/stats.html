@@ -1,0 +1,152 @@
+{% extends "quickshort/base.html" %}
+
+{% load static %}
+
+
+{% block content %}
+
+<div class="container ">
+    <div class="row">
+        <div class="col col-12 col-lg-6 py-4">
+            <h1 class="py-3">Statistics</h1>
+
+            <table class="table">
+                <tr>
+                    <th>Url</th>
+                    <td><a href="{{ long_url }}">{{ long_url }}</a></td>
+                </tr>
+                <tr>
+                    <th>Short url</th>
+                    <td><a href="/{{ short_url }}">{{ short_url }}</a></td>
+                </tr>
+                <tr>
+                    <th>Number of clicks</th>
+                    <td>{{ number_of_clicks }}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+    <div class="row ">
+        <div class="col col-12 col-lg-6">
+            <h2>Aggregated by source IP</h2>
+            <table class="table">
+                <thead>
+                    <th scope="col">IP</th>
+                    <th scope="col">Count</th>
+                </thead>
+                {% for group in grouped_ips %}
+                <tr>
+                    <td>
+                        {{ group.source_ip }}
+                    </td>
+                    <td>
+                        {{ group.count }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>The public IP address that was used to follow this link. </p>
+
+        </div>
+
+        <div class="col col-12 col-lg-6">
+            <h2>Aggregated by previous page</h2>
+            <table class="table">
+                <thead>
+                    <th scope="col">URL</th>
+                    <th>Count</th>
+                </thead>
+                {% for group in grouped_urls %}
+                <tr>
+                    <td>
+                        {{ group.referrer_url }}
+                    </td>
+                    <td>
+                        {{ group.count }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <p>This data is pulled from the referrer URL on the HTTP request. This can easily be spoofed, though most browsers do not by default.</p>
+        </div>
+    </div>
+
+    <div class="row ">
+        <div class="col">
+            <h2>Over time</h2>
+            <canvas id="chart1"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+    <script>
+
+        console.log("{{grouped_time}}");
+
+        let url = $(location).attr('href');
+        console.log(url);
+
+        $( document ).ready(function() {
+            var ctx = document.getElementById('chart1').getContext('2d');
+
+
+            const plot_graph = function(data) {
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'line',
+
+                    data: {
+                        datasets: [{
+                            label: 'Scatter Dataset',
+                            data: data,
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        time: {
+                            parser: 'YYYY-MM-DD h:mm:ss a'
+                        },
+                        scales: {
+                            xAxes: [{
+                                type: 'time',
+                                time: {
+                                    unit: 'hour'
+                                }
+                            }]
+                        }
+
+                    }
+                });
+            };
+
+
+            $.ajax({
+                type: "GET",
+                url: url + "/ts",
+                success: function (data) {
+
+                    console.log(data);
+
+                    plot_graph(data);
+                },
+                error: function (request, status, errorThrown) {
+                    console.log( "Encountered error: ");
+                    console.log(request);
+                    console.log(status);
+                    console.log(errorThrown);
+                }
+            });
+
+
+
+
+
+        });
+    </script>
+</div>
+
+{% endblock %}

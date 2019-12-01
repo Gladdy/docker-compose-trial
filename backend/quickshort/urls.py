@@ -26,12 +26,25 @@ router.register(r'clicks', views.ClickViewSet)
 
 from django.views.decorators.csrf import csrf_exempt
 
-# Wire up our API using automatic URL routing.
-# Additionally, we include login URLs for the browsable API.
-urlpatterns = [
+
+from django.shortcuts import render
+
+
+
+from django.conf import settings
+
+
+debug_patterns = [
+    path('', views.IndexView.as_view()),
     path('rest', include(router.urls)),
     path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
+] if settings.DEBUG else []
+
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
+urlpatterns = debug_patterns + [
     path('create', csrf_exempt(views.CreateShortUrl.as_view())),
-    path('stats/<slug:slug>', views.UrlRedirectView.as_view()),
+    path('stats/<slug:slug>', views.UrlStatsView.as_view()),
+    path('stats/<slug:slug>/ts', views.UrlStatsTVView.as_view()),
     path('<slug:slug>', views.UrlRedirectView.as_view())
 ]
