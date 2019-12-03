@@ -25,7 +25,7 @@
 
         shorten_result.hide();
 
-        let url = "http://" + $(location).attr('host');
+        let url = $(location).attr('protocol') + "//" + $(location).attr('host');
         console.log(url);
 
 
