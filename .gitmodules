@@ -1,0 +1,3 @@
+[submodule "deployment/certbot"]
+	path = deployment/certbot
+	url = git@github.com:wmnnd/nginx-certbot.git
