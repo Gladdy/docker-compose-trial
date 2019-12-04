@@ -14,6 +14,7 @@ ENV DOCKER_CONTAINER=1
 
 COPY deployment/web/uwsgi.ini /config/uwsgi.ini
 COPY deployment/web/do_migration.sh /do_migration.sh
+COPY deployment/.env /app/.env
 EXPOSE 8001
 
 RUN useradd -ms /bin/bash uwsgi
