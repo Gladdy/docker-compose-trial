@@ -3,7 +3,6 @@ version: '3'
 services:
   certbot:
     image: certbot/certbot
-    #restart: unless-stopped
     volumes:
       - ./certbot/data/certbot/conf:/etc/letsencrypt
       - ./certbot/data/certbot/www:/var/www/certbot
@@ -56,7 +55,3 @@ services:
     environment:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
-#volumes:
-#  pg_data: {}
-#  pg_backups: {}
-#  pg_admin: {}
