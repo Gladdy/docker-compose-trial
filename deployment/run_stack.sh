@@ -1,5 +1,5 @@
 #!/bin/bash
-cd `dirname $0`
+export $(cat .env | xargs)
 source activate quickshort
 python ../backend/manage.py build
 docker-compose build
